@@ -3,11 +3,11 @@ def SanShunZi(cards):
     card_list = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
     #对手牌进行排列，凑出顺子阵容
     for lst_i in cards:
-        l = lst_i.strip('*')
-        l = lst_i.strip('#')
-        l = lst_i.strip('$')
-        l = lst_i.strip('&')
-        card_dic[l] += 1
+        # l = lst_i.strip('*')
+        # l = lst_i.strip('#')
+        # l = lst_i.strip('$')
+        # l = lst_i.strip('&')
+        card_dic[lst_i[1:]] += 1
 
     new_pai = []
     count = 13
@@ -27,7 +27,6 @@ def SanShunZi(cards):
         f = new_shoupai.find(new_pai[i])
         if f != -1:
             new_shoupai = new_shoupai[:f + l] + new_pai[i] + new_shoupai[f + l:]
-    print(new_shoupai)
 
     ###判断是否为三顺子
     shunzi_5 = ['23456', '34567', '45678', '56789', '678910', '78910J', '8910JQ', '910JQK', '10JQKA']
