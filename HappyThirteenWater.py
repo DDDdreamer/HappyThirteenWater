@@ -951,15 +951,26 @@ def best_cards_type(cards):
     return best_cards_Type
 
 
-def shuafen():
-    i = 10
+
+if __name__ == '__main__':
+    print('请务必使用绑定后的账户进行登录!!!!')
+    while 1:
+        username = str(input('请输入绑定后的账户名:'))
+        userpassword = str(input('请输入绑定后的密码:'))
+        login_info = login(username, userpassword)#登录
+        if login_info == 0:
+            break
+    i = int(input('请输入要开启的战局数:'))
+    print('现在开始开启{}局游戏'.format(i))
     while i:
         info = startgame()
         if info['status'] == 0:
+            print('战局id:',info['data']['id'])
             postcards(info['data']['card'])
-        i-=1
+        else:
+            print('无法连接')
+        i -= 1
 
-if __name__ == '__main__':
-    login('dreamer', '147852369.6666')
-    # shuafen()
+    #获取排行榜
+    print('排行榜：')
     get_rank()
