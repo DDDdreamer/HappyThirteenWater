@@ -290,7 +290,6 @@ def liangdui_cmp(zhongdun_type,xiadun_type):#考虑连对情形
         res = cards_cmp(cards1, cards2)
     return res
 
-#判断牌型是否合法，合法返回True及各墩牌型，否则返回False
 def isleagle(cards):
     cards_order = {'散牌':0, '一对':1, '两对':2, '三条':3, '顺子':4, '同花':5, '葫芦':6, '炸弹':7, '同花顺':8}
     shangdun_type = cards_type(cards['shangdun'])
@@ -372,20 +371,21 @@ def Compare(old, new):
         profit = 0
 
         # 计算下墩盈利
+        p1 = abs(cards_order[type_old[2]] - cards_order[type_new[2]])
         if cards_order[type_old[2]] < cards_order[type_new[2]]:
             if type_new[2] == '同花顺':
-                profit += 5
+                profit += 5 + p1
             elif type_new[2] == "炸弹":
-                profit += 4
+                profit += 4 + p1
             else:
-                profit += 1
+                profit += p1
         elif cards_order[type_old[2]] > cards_order[type_new[2]]:
             if type_new[2] == '同花顺':
-                profit -= 5
+                profit -= 5 + p1
             elif type_new[2] == "炸弹":
-                profit -= 4
+                profit -= 4 + p1
             else:
-                profit -= 1
+                profit -= p1
         else:
             res = 0
             card1 = cards_type(old['xiadun'])
@@ -395,26 +395,19 @@ def Compare(old, new):
                                 ['9', '10'], ['10', 'J'], ['J', 'Q'], ['Q', 'K'], ['K', 'J']]:
                     if card2[1] in [['2', '3'], ['3', '4'], ['4', '5'], ['5', '6'], ['6', '7'], ['7', '8'], ['8', '9'],
                                     ['9', '10'], ['10', 'J'], ['J', 'Q'], ['Q', 'K'], ['K', 'J']]:
-                        res1 = cards_cmp(card1[1], card2[1])
-                        if res1 == 0:
-                            res = cards_cmp(card2[2], card1[2])
-                        else:
-                            res = res1
+                        res = cards_cmp(card1[1], card2[1])
                     else:
                         res = -1
+                elif card2[1] in [['2', '3'], ['3', '4'], ['4', '5'], ['5', '6'], ['6', '7'], ['7', '8'], ['8', '9'],
+                                    ['9', '10'], ['10', 'J'], ['J', 'Q'], ['Q', 'K'], ['K', 'J']]:
+                    res = 1
                 else:
-                    if card1[1] == card2[1]:
-                        res = cards_cmp(card2[2], card1[2])
-                    else:
-                        res = cards_cmp(card1[1], card2[1])
+                    res = cards_cmp(card1[1],card2[1])
             elif card1[0] == '三条' or card1[0] == '葫芦' or card1[0] == '炸弹':
-                if card1[1] == card2[1]:
-                    res = cards_cmp(card2[2], card1[2])
-                else:
-                    res = cards_cmp(card1[1], card2[1])
+                res = cards_cmp(card2[2], card1[2])
             else:
                 res = cards_cmp(old['xiadun'], new['xiadun'])
-            #res = cards_cmp(old['xiadun'], new['xiadun'])
+
             if res > 0:
                 if type_new[1] == '同花顺':
                     profit += 10
@@ -435,24 +428,25 @@ def Compare(old, new):
                     profit -= 1
 
         # 计算中墩盈利
+        p2 = abs(cards_order[type_old[1]] - cards_order[type_new[1]])
         if cards_order[type_old[1]] < cards_order[type_new[1]]:
             if type_new[1] == '同花顺':
-                profit += 10
+                profit += 10 + p2
             elif type_new[1] == "炸弹":
-                profit += 8
+                profit += 8 + p2
             elif type_new[1] == "葫芦":
                 profit += 2
             else:
-                profit += 1
+                profit += p2
         elif cards_order[type_old[1]] > cards_order[type_new[1]]:
             if type_new[1] == '同花顺':
-                profit -= 10
+                profit -= 10 + p2
             elif type_new[1] == "炸弹":
-                profit -= 8
+                profit -= 8 + p2
             elif type_new[1] == "葫芦":
-                profit -= 2
+                profit -= 2 + p2
             else:
-                profit -= 1
+                profit -= p2
         else:
             res = 0
             card1 = cards_type(old['zhongdun'])
@@ -464,27 +458,16 @@ def Compare(old, new):
                     if card2[1] in [['2', '3'], ['3', '4'], ['4', '5'], ['5', '6'], ['6', '7'], ['7', '8'],
                                     ['8', '9'],
                                     ['9', '10'], ['10', 'J'], ['J', 'Q'], ['Q', 'K'], ['K', 'J']]:
-                        res1 = cards_cmp(card1[1], card2[1])
-                        if res1 == 0:
-                            res = cards_cmp(card2[2], card1[2])
-                        else:
-                            res = res1
+                        res = cards_cmp(card1[1], card2[1])
                     else:
                         res = -1
                 else:
-                    if card1[1] == card2[1]:
-                        res = cards_cmp(card2[2], card1[2])
-                    else:
-                        res = cards_cmp(card1[1], card2[1])
-            elif card1[0] == '三条' or card1[0] == '葫芦' or card1[0] == '炸弹':
-                if card1[1] == card2[1]:
                     res = cards_cmp(card2[2], card1[2])
-                else:
-                    res = cards_cmp(card1[1], card2[1])
+            elif card1[0] == '三条' or card1[0] == '葫芦' or card1[0] == '炸弹':
+                res = cards_cmp(card2[2], card1[2])
             else:
                 res = cards_cmp(old['zhongdun'], new['zhongdun'])
 
-            #res = cards_cmp(old['zhongdun'],new['zhongdun'])
             if res > 0:
                 if type_new[1] == '同花顺':
                     profit += 10
@@ -505,10 +488,11 @@ def Compare(old, new):
                     profit -= 1
 
         #计算上墩盈利
+        p3 = abs(cards_order[type_new[0]] - cards_order[type_old[0]])
         if cards_order[type_old[0]] < cards_order[type_new[0]]:
-            profit += 1
+            profit += p3
         elif cards_order[type_old[0]] > cards_order[type_new[0]]:
-            profit -= 1
+            profit -= p3
         else:
             profit += cards_cmp(old['shangdun'], new['shangdun'])
 

@@ -146,3 +146,8 @@ def get_history_detail(game_id):#获取历史战局详情
     print(info)
     return info
 
+if __name__=='__main__':
+    login('dreamer','147852369.6666')
+    # while 1:
+    #     postcards(startgame()['data']['card'])
+    get_history_list('1005','1')
